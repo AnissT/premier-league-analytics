@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+*.egg-info/
+
+# Données 
+data/raw/*.csv
+data/processed/*.csv
+data/exports/*.csv
+data/ml/*.csv
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Config sensible
+scripts/config.py
+.env
+
+# PostgreSQL
+*.sql.backup
+*.dump
+
+# Power BI
+*.pbix.tmp
+~$*.pbix
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDE
+.vscode/
+.idea/
