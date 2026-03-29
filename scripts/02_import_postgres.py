@@ -16,25 +16,25 @@ def connect_db():
     """Connexion PostgreSQL"""
     try:
         conn = psycopg2.connect(**DB_CONFIG)
-        print("✅ Connexion PostgreSQL réussie")
+        print("Connexion PostgreSQL réussie")
         return conn
     except Exception as e:
-        print(f"❌ Erreur : {e}")
+        print(f"Erreur : {e}")
         return None
 
 def import_clubs(conn):
     """Importer les 20 clubs"""
-    
+
     print("\n" + "="*80)
-    print("🏆 IMPORT DES CLUBS")
+    print("IMPORT DES CLUBS")
     print("="*80)
-    
+
     df = pd.read_csv('data/processed/clubs_aggregated.csv')
-    print(f"📥 {len(df)} clubs chargés")
-    
+    print(f"{len(df)} clubs chargés")
+
     cursor = conn.cursor()
     inserted = 0
-    
+
     for idx, row in df.iterrows():
         try:
             cursor.execute("""
@@ -55,25 +55,25 @@ def import_clubs(conn):
             ))
             inserted += 1
         except Exception as e:
-            print(f"⚠️  Erreur {row['club']}: {e}")
-    
+            print(f"Erreur {row['club']}: {e}")
+
     conn.commit()
-    print(f"✅ {inserted} clubs insérés")
+    print(f"{inserted} clubs insérés")
     cursor.close()
 
 def import_joueurs(conn):
     """Importer les 574 joueurs"""
-    
+
     print("\n" + "="*80)
-    print("⚽ IMPORT DES JOUEURS")
+    print("IMPORT DES JOUEURS")
     print("="*80)
-    
+
     df = pd.read_csv('data/processed/joueurs_clean.csv')
-    print(f"📥 {len(df)} joueurs chargés")
-    
+    print(f"{len(df)} joueurs chargés")
+
     cursor = conn.cursor()
     inserted = 0
-    
+
     for idx, row in df.iterrows():
         try:
             cursor.execute("""
@@ -107,62 +107,62 @@ def import_joueurs(conn):
                 float(row['minutes_par_match']), float(row['pct_titulaire']), float(row['score_impact'])
             ))
             inserted += 1
-            
+
             if (idx + 1) % 100 == 0:
-                print(f"   📊 {idx + 1}/{len(df)} joueurs...")
-        
+                print(f"   {idx + 1}/{len(df)} joueurs...")
+
         except Exception as e:
-            print(f"⚠️  Erreur {row['nom']}: {e}")
-    
+            print(f"Erreur {row['nom']}: {e}")
+
     conn.commit()
-    print(f"\n✅ {inserted} joueurs insérés")
+    print(f"\n{inserted} joueurs insérés")
     cursor.close()
 
 def verify(conn):
     """Vérifications"""
-    
+
     print("\n" + "="*80)
-    print("🔍 VÉRIFICATION")
+    print("VÉRIFICATION")
     print("="*80)
-    
+
     cursor = conn.cursor()
-    
+
     # Counts
     cursor.execute("SELECT COUNT(*) FROM clubs")
-    print(f"✅ Clubs : {cursor.fetchone()[0]}")
-    
+    print(f"Clubs : {cursor.fetchone()[0]}")
+
     cursor.execute("SELECT COUNT(*) FROM joueurs")
-    print(f"✅ Joueurs : {cursor.fetchone()[0]}")
-    
+    print(f"Joueurs : {cursor.fetchone()[0]}")
+
     # Top 5 buteurs
-    print("\n🏆 TOP 5 BUTEURS :")
+    print("\nTOP 5 BUTEURS :")
     cursor.execute("SELECT nom, club, buts FROM joueurs ORDER BY buts DESC LIMIT 5")
     for nom, club, buts in cursor.fetchall():
         print(f"   {nom} ({club}) - {buts} buts")
-    
+
     cursor.close()
 
 def main():
     print("="*80)
-    print("🚀 IMPORT POSTGRESQL")
+    print("IMPORT POSTGRESQL")
     print("="*80)
-    
+
     conn = connect_db()
     if not conn:
         return
-    
+
     try:
         import_clubs(conn)
         import_joueurs(conn)
         verify(conn)
-        
+
         print("\n" + "="*80)
-        print("✅ IMPORT TERMINÉ")
+        print("IMPORT TERMINÉ")
         print("="*80)
-        print("\n📊 20 clubs + 574 joueurs importés")
-        print("🎯 Prochaine étape : Requêtes SQL (Jour 2)")
+        print("\n20 clubs + 574 joueurs importés")
+        print("Prochaine étape : Requêtes SQL (Jour 2)")
         print("="*80)
-    
+
     finally:
         conn.close()
 

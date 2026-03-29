@@ -1,11 +1,11 @@
-# 📊 GLOSSAIRE DES STATISTIQUES - VERSION COURTE
+#  GLOSSAIRE DES STATISTIQUES - VERSION COURTE
 
 **Projet :** Premier League Analytics 2024-25  
 **Fichiers :** fbref_PL_2024-25.csv → joueurs_clean.csv (574 joueurs × 36 colonnes)
 
 ---
 
-## 🆔 IDENTITÉ (6 colonnes)
+##  IDENTITÉ (6 colonnes)
 
 | Colonne | Avant | Définition |
 |---------|-------|------------|
@@ -18,7 +18,7 @@
 
 ---
 
-## ⏱️ TEMPS DE JEU (3 colonnes)
+##  TEMPS DE JEU (3 colonnes)
 
 | Colonne | Avant | Définition |
 |---------|-------|------------|
@@ -28,7 +28,7 @@
 
 ---
 
-## ⚽ PERFORMANCE OFFENSIVE (8 colonnes)
+##  PERFORMANCE OFFENSIVE (8 colonnes)
 
 | Colonne | Avant | Définition |
 |---------|-------|------------|
@@ -41,13 +41,13 @@
 | `xAG` | xAG | **Expected Assists** : passes décisives attendues |
 | `npxG_plus_xAG` | npxG+xAG | Somme npxG + xAG (contribution offensive attendue) |
 
-**💡 xG expliqué simplement :**
+** xG expliqué simplement :**
 - xG = 10, Buts = 12 → Joueur finit bien (+2 overperformance)
 - xG = 10, Buts = 7 → Joueur gaspille (-3 underperformance)
 
 ---
 
-## 🏃 PROGRESSION (3 colonnes)
+##  PROGRESSION (3 colonnes)
 
 | Colonne | Avant | Définition |
 |---------|-------|------------|
@@ -57,7 +57,7 @@
 
 ---
 
-## 🟨🟥 DISCIPLINE (2 colonnes)
+##  DISCIPLINE (2 colonnes)
 
 | Colonne | Avant | Définition |
 |---------|-------|------------|
@@ -66,7 +66,7 @@
 
 ---
 
-## 📊 STATS NORMALISÉES PAR 90 MINUTES (8 colonnes)
+##  STATS NORMALISÉES PAR 90 MINUTES (8 colonnes)
 
 **Pourquoi "par 90" ?** Pour comparer équitablement joueurs avec temps de jeu différent
 
@@ -81,14 +81,14 @@
 | `contribution_per_90` | G+A.1 | (Buts + Assists) par 90 min |
 | `npxG_plus_xAG_per_90` | npxG+xAG.1 | Contribution attendue par 90 min |
 
-**💡 Exemple :**
+** Exemple :**
 - Joueur A : 10 buts en 1000 min → 0.90 buts/90
 - Joueur B : 15 buts en 2500 min → 0.54 buts/90
 - **Joueur A est plus efficace !**
 
 ---
 
-## 🔬 MÉTRIQUES CALCULÉES - CRÉÉES PAR NOUS (6 colonnes)
+##  MÉTRIQUES CALCULÉES - CRÉÉES PAR NOUS (6 colonnes)
 
 | Colonne | Formule | Définition |
 |---------|---------|------------|
@@ -101,13 +101,13 @@
 
 ---
 
-## 💡 INTERPRÉTATION RAPIDE
+##  INTERPRÉTATION RAPIDE
 
 ### `G_minus_xG` (Overperformance buts)
-- **+5 ou plus** : Finisseur exceptionnel ⭐⭐⭐
-- **+1 à +5** : Bonne finition ✅
+- **+5 ou plus** : Finisseur exceptionnel
+- **+1 à +5** : Bonne finition 
 - **-1 à +1** : Normal
-- **-5 ou moins** : Gaspille beaucoup ❌
+- **-5 ou moins** : Gaspille beaucoup 
 
 ### `pct_titulaire`
 - **90-100%** : Titulaire indiscutable
@@ -123,14 +123,14 @@
 
 ---
 
-## 📈 EXEMPLES CONCRETS
+##  EXEMPLES CONCRETS
 
 ### Mohamed Salah (Liverpool)
 ```
 Buts : 29
 Assists : 18
 xG : 25.2
-G_minus_xG : +3.8      → Finit mieux que prévu ✅
+G_minus_xG : +3.8      → Finit mieux que prévu 
 contribution_offensive : 47
 buts_per_90 : 0.77     → Presque 1 but par match
 score_impact : 114.9   → Impact ÉNORME
@@ -156,7 +156,7 @@ pct_titulaire : 13%    → Remplaçant
 
 ---
 
-## 🎯 COLONNES SUPPRIMÉES (non gardées)
+##  COLONNES SUPPRIMÉES (non gardées)
 
 | Colonne originale | Raison |
 |-------------------|--------|
@@ -169,7 +169,7 @@ pct_titulaire : 13%    → Remplaçant
 
 ---
 
-## 📊 RÉSUMÉ FINAL
+##  RÉSUMÉ FINAL
 
 **Total colonnes :** 36
 

@@ -10,20 +10,20 @@ import numpy as np
 
 def clean_player_data():
     """Nettoie et enrichit les données joueurs"""
-    
+
     print("="*80)
-    print("🧹 NETTOYAGE DES DONNÉES JOUEURS")
+    print("NETTOYAGE DES DONNÉES JOUEURS")
     print("="*80)
-    
+
     # 1. CHARGER LES DONNÉES
-    print("\n📥 Chargement du fichier brut...")
+    print("\nChargement du fichier brut...")
     df = pd.read_csv('data/raw/fbref_PL_2024-25.csv')
     print(f"   Lignes : {len(df)}")
     print(f"   Colonnes : {len(df.columns)}")
-    
+
     # 2. SÉLECTIONNER LES COLONNES UTILES (30 colonnes)
-    print("\n📋 Sélection des colonnes pertinentes...")
-    
+    print("\nSélection des colonnes pertinentes...")
+
     colonnes_a_garder = [
         # Identité (6)
         'Player', 'Nation', 'Pos', 'Squad', 'Age', 'Born',
@@ -38,13 +38,13 @@ def clean_player_data():
         # Stats par 90 (8)
         'Gls.1', 'Ast.1', 'G-PK.1', 'xG.1', 'xAG.1', 'npxG.1', 'G+A.1', 'npxG+xAG.1'
     ]
-    
+
     df = df[colonnes_a_garder].copy()
     print(f"   {len(df.columns)} colonnes gardées")
-    
+
     # 3. RENOMMER LES COLONNES EN CLAIR
-    print("\n✏️  Renommage des colonnes...")
-    
+    print("\nRenommage des colonnes...")
+
     df = df.rename(columns={
         # Identité
         'Player': 'nom',
@@ -83,12 +83,12 @@ def clean_player_data():
         'G+A.1': 'contribution_per_90',
         'npxG+xAG.1': 'npxG_plus_xAG_per_90'
     })
-    
-    print(f"   ✅ Colonnes renommées")
-    
+
+    print(f"   Colonnes renommées")
+
     # 4. GÉRER LES VALEURS MANQUANTES
-    print("\n⚠️  Gestion des valeurs manquantes...")
-    
+    print("\nGestion des valeurs manquantes...")
+
     # Afficher les valeurs manquantes
     missing = df.isnull().sum()
     missing = missing[missing > 0]
@@ -96,44 +96,44 @@ def clean_player_data():
         print(f"   Colonnes avec valeurs manquantes :")
         for col, count in missing.items():
             print(f"      {col}: {count} ({count/len(df)*100:.1f}%)")
-    
+
     # CORRIGER LES 4 JOUEURS MANUELLEMENT
-    print("\n🔧 Correction manuelle des 4 joueurs...")
-    
+    print("\nCorrection manuelle des 4 joueurs...")
+
     # Olabade Aluko
     df.loc[df['nom'] == 'Olabade Aluko', 'nationalite'] = 'eng ENG'
     df.loc[df['nom'] == 'Olabade Aluko', 'age'] = 18
     df.loc[df['nom'] == 'Olabade Aluko', 'annee_naissance'] = 2006
-    
+
     # Jake Evans
     df.loc[df['nom'] == 'Jake Evans', 'nationalite'] = 'wls WAL'
     df.loc[df['nom'] == 'Jake Evans', 'age'] = 18
     df.loc[df['nom'] == 'Jake Evans', 'annee_naissance'] = 2006
-    
+
     # Mateus Mané (attention à l'accent)
     df.loc[df['nom'] == 'Mateus Mane', 'nationalite'] = 'pt POR'
     df.loc[df['nom'] == 'Mateus Mane', 'age'] = 19
     df.loc[df['nom'] == 'Mateus Mane', 'annee_naissance'] = 2005
-    
+
     # Jeremy Monga
     df.loc[df['nom'] == 'Jeremy Monga', 'nationalite'] = 'be BEL'
     df.loc[df['nom'] == 'Jeremy Monga', 'age'] = 17
     df.loc[df['nom'] == 'Jeremy Monga', 'annee_naissance'] = 2007
-    
-    print(f"   ✅ 4 joueurs corrigés")
-    
+
+    print(f"   4 joueurs corrigés")
+
     # Remplir les valeurs manquantes restantes (stats numériques)
     colonnes_numeriques = df.select_dtypes(include=[np.number]).columns
     for col in colonnes_numeriques:
         if df[col].isnull().sum() > 0:
             df[col] = df[col].fillna(0)
-    
-    print(f"   ✅ Valeurs manquantes gérées")
+
+    print(f"   Valeurs manquantes gérées")
     print(f"   Lignes : {len(df)} (aucun joueur supprimé)")
-    
+
     # 5. CORRIGER LES TYPES
-    print("\n🔧 Correction des types de données...")
-    
+    print("\nCorrection des types de données...")
+
     df['age'] = df['age'].astype(int)
     df['annee_naissance'] = df['annee_naissance'].astype(int)
     df['matchs_joues'] = df['matchs_joues'].astype(int)
@@ -143,35 +143,35 @@ def clean_player_data():
     df['assists'] = df['assists'].astype(int)
     df['cartons_jaunes'] = df['cartons_jaunes'].astype(int)
     df['cartons_rouges'] = df['cartons_rouges'].astype(int)
-    
-    print(f"   ✅ Types corrigés")
-    
+
+    print(f"   Types corrigés")
+
     # 6. FEATURE ENGINEERING
-    print("\n🔬 Feature Engineering (6 nouvelles colonnes)...")
-    
+    print("\nFeature Engineering (6 nouvelles colonnes)...")
+
     # 6.1 Contribution offensive
     df['contribution_offensive'] = df['buts'] + df['assists']
-    
+
     # 6.2 Overperformance xG
     df['G_minus_xG'] = (df['buts'] - df['xG']).round(2)
-    
+
     # 6.3 Overperformance assists
     df['A_minus_xAG'] = (df['assists'] - df['xAG']).round(2)
-    
+
     # 6.4 Minutes par match (éviter division par zéro)
     df['minutes_par_match'] = np.where(
         df['matchs_joues'] > 0,
         (df['minutes_jouees'] / df['matchs_joues']).round(1),
         0
     )
-    
+
     # 6.5 Pourcentage titularisations (éviter division par zéro)
     df['pct_titulaire'] = np.where(
         df['matchs_joues'] > 0,
         ((df['matchs_titulaire'] / df['matchs_joues']) * 100).round(1),
         0
     )
-    
+
     # 6.6 Score impact global
     df['score_impact'] = (
         df['buts'] * 2 +
@@ -179,35 +179,35 @@ def clean_player_data():
         df['courses_progressives'] * 0.1 +
         df['passes_progressives'] * 0.1
     ).round(2)
-    
-    print(f"   ✅ 6 nouvelles colonnes créées")
+
+    print(f"   6 nouvelles colonnes créées")
     print(f"   Total colonnes : {len(df.columns)}")
-    
+
     # 7. TRIER PAR CONTRIBUTION
     df = df.sort_values('contribution_offensive', ascending=False)
-    
+
     # 8. AFFICHER TOP 10
-    print("\n🏆 TOP 10 CONTRIBUTEURS :")
+    print("\nTOP 10 CONTRIBUTEURS :")
     top10 = df[['nom', 'club', 'buts', 'assists', 'contribution_offensive']].head(10)
     print(top10.to_string(index=False))
-    
+
     # 9. SAUVEGARDER
-    print("\n💾 Sauvegarde...")
+    print("\nSauvegarde...")
     output_path = 'data/processed/joueurs_clean.csv'
     df.to_csv(output_path, index=False, encoding='utf-8')
-    print(f"   ✅ Fichier sauvegardé : {output_path}")
+    print(f"   Fichier sauvegardé : {output_path}")
     print(f"   Lignes : {len(df)}")
     print(f"   Colonnes : {len(df.columns)}")
-    
+
     return df
 
 def create_clubs_aggregated(df_joueurs):
     """Crée le fichier des stats agrégées par club"""
-    
+
     print("\n" + "="*80)
-    print("🏆 AGRÉGATION DES STATS PAR CLUB")
+    print("AGRÉGATION DES STATS PAR CLUB")
     print("="*80)
-    
+
     # Grouper par club et agréger
     df_clubs = df_joueurs.groupby('club').agg({
         'nom': 'count',
@@ -224,62 +224,62 @@ def create_clubs_aggregated(df_joueurs):
         'courses_progressives': 'sum',
         'passes_progressives': 'sum'
     }).rename(columns={'nom': 'total_joueurs'})
-    
+
     # Arrondir les moyennes
     df_clubs['age'] = df_clubs['age'].round(1)
     df_clubs['xG'] = df_clubs['xG'].round(2)
     df_clubs['npxG'] = df_clubs['npxG'].round(2)
     df_clubs['xAG'] = df_clubs['xAG'].round(2)
-    
+
     # Ajouter des colonnes calculées
     df_clubs['buts_moins_xG'] = (df_clubs['buts'] - df_clubs['xG']).round(2)
     df_clubs['assists_moins_xAG'] = (df_clubs['assists'] - df_clubs['xAG']).round(2)
-    
+
     # Réinitialiser l'index
     df_clubs = df_clubs.reset_index()
-    
+
     # Trier par contribution offensive
     df_clubs = df_clubs.sort_values('contribution_offensive', ascending=False)
-    
+
     # Sauvegarder
     output_path = 'data/processed/clubs_aggregated.csv'
     df_clubs.to_csv(output_path, index=False, encoding='utf-8')
-    
-    print(f"\n✅ Fichier clubs agrégé créé : {output_path}")
+
+    print(f"\nFichier clubs agrégé créé : {output_path}")
     print(f"   Lignes : {len(df_clubs)}")
     print(f"   Colonnes : {len(df_clubs.columns)}")
-    
+
     # Afficher top 5
-    print("\n📊 TOP 5 CLUBS PAR CONTRIBUTION OFFENSIVE :")
+    print("\nTOP 5 CLUBS PAR CONTRIBUTION OFFENSIVE :")
     top5 = df_clubs[['club', 'total_joueurs', 'age', 'buts', 'assists', 'contribution_offensive']].head()
     print(top5.to_string(index=False))
-    
+
     return df_clubs
 
 def main():
     """Fonction principale"""
-    
+
     print("="*80)
-    print("🚀 NETTOYAGE DONNÉES PREMIER LEAGUE 2024-25")
+    print("NETTOYAGE DONNÉES PREMIER LEAGUE 2024-25")
     print("="*80)
-    
+
     # Nettoyer données joueurs
     df_joueurs = clean_player_data()
-    
+
     # Créer agrégation clubs
     df_clubs = create_clubs_aggregated(df_joueurs)
-    
+
     # Résumé
     print("\n" + "="*80)
-    print("✅ NETTOYAGE TERMINÉ")
+    print("NETTOYAGE TERMINÉ")
     print("="*80)
-    print(f"\n📊 Résumé :")
+    print(f"\nRésumé :")
     print(f"   Joueurs : {len(df_joueurs)} lignes, {len(df_joueurs.columns)} colonnes")
     print(f"   Clubs   : {len(df_clubs)} lignes, {len(df_clubs.columns)} colonnes")
-    print(f"\n💾 Fichiers créés :")
+    print(f"\nFichiers créés :")
     print(f"   - data/processed/joueurs_clean.csv")
     print(f"   - data/processed/clubs_aggregated.csv")
-    print("\n🎯 Prochaine étape : PostgreSQL (script 02_import_postgres.py)")
+    print("\nProchaine étape : PostgreSQL (script 02_import_postgres.py)")
     print("="*80)
 
 if __name__ == "__main__":
