@@ -279,7 +279,6 @@ def main():
     print(f"\nFichiers créés :")
     print(f"   - data/processed/joueurs_clean.csv")
     print(f"   - data/processed/clubs_aggregated.csv")
-    print("\nProchaine étape : PostgreSQL (script 02_import_postgres.py)")
     print("="*80)
 
 if __name__ == "__main__":

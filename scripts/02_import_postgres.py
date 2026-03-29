@@ -7,9 +7,16 @@ Date : Février 2025
 import pandas as pd
 import psycopg2
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 DB_CONFIG = {
-    'dbname': 'football_db',
-    'user': 'anis',
+    'dbname': os.getenv('DB_NAME'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'host': os.getenv('DB_HOST')
 }
 
 def connect_db():
@@ -160,7 +167,6 @@ def main():
         print("IMPORT TERMINÉ")
         print("="*80)
         print("\n20 clubs + 574 joueurs importés")
-        print("Prochaine étape : Requêtes SQL (Jour 2)")
         print("="*80)
 
     finally:
