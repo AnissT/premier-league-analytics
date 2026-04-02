@@ -77,12 +77,10 @@ football-analytics-bi/
 │   └── queries.sql                   10 requêtes analytiques
 │
 ├── powerbi/
-│   ├── dashboard_scout.pbix          Dashboard joueurs
-│   └── dashboard_club.pbix           Dashboard clubs
+│   └── scouts.pbix                   Dashboard scouts (Power BI)
 │
 ├── docs/
 │   ├── GLOSSAIRE_STATS_COMPLET.md    Définitions 36 statistiques
-│   ├── PRESENTATION_PROJET.md        Présentation complète
 │   └── screenshots/                  Captures dashboards
 │
 ├── requirements.txt
@@ -200,22 +198,8 @@ Analyse des fichiers CSV bruts :
 - Top 10 buteurs (graphique en barres)
 - Scatter plot xG vs Buts (identification overperformance)
 - Tableau top 20 joueurs (tri dynamique)
-- Efficacité tirs (ratio buts/tirs)
 
 **Interactivité** : Cross-filtering complet entre tous les visuels
-
-### Dashboard Club (Analyse Équipes)
-
-**KPIs** :
-- Club leader en contribution offensive
-- Meilleure attaque (total buts)
-- Équipe la plus jeune (âge moyen)
-
-**Visualisations** :
-- Classement buts par club (barres horizontales)
-- Scatter plot xG total vs Buts totaux
-- Tableau récapitulatif clubs (buts, assists, âge moyen)
-- Top 5 overperformance xG clubs
 
 ## Insights clés
 
