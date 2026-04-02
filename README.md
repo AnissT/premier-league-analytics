@@ -21,7 +21,7 @@ Analyser les performances de 574 joueurs et 20 clubs de Premier League avec :
 - Pipeline ETL complet (extraction, transformation, chargement)
 - Base de données PostgreSQL relationnelle
 - 10 requêtes SQL analytiques avancées
-- 2 dashboards Power BI interactifs
+-  dashboards Power BI interactifs
 
 ## Données
 
@@ -249,36 +249,11 @@ Analyse des fichiers CSV bruts :
 - Équipe la plus jeune : 24.0 ans moyen
 - 2 joueurs dans le top 10 buteurs
 
-## Compétences démontrées
 
-**Data Engineering** :
-- Pipeline ETL complet (Extract-Transform-Load)
-- Nettoyage de données (gestion valeurs manquantes, normalisation)
-- Feature Engineering (création de 6 métriques business)
-- Manipulation de données avec Pandas et NumPy
-
-**Base de données** :
-- Modélisation relationnelle (2 tables, contraintes d'intégrité)
-- SQL avancé (Window Functions, CTEs, agrégations)
-- Optimisation requêtes (index, vues)
-- Connexion Python-PostgreSQL (psycopg2)
-
-**Business Intelligence** :
-- Conception de dashboards interactifs
-- Visualisations adaptées aux insights
-- DAX pour mesures calculées
-- Cross-filtering et expérience utilisateur
-
-**Gestion de projet** :
-- Version control avec Git
-- Documentation technique complète
-- Code structuré et commenté
-- Architecture projet professionnelle
 
 ## Auteur
 
 Anis  
-Étudiant L3 Informatique - Candidat Master MIAGE / Data Science  
 Projet réalisé : Février 2025
 
 GitHub : https://github.com/AnissT/premier-league-analytics
